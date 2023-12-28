@@ -1,0 +1,3 @@
+[submodule "Simulation/WasteCollectionAmsterdam"]
+	path = Simulation/WasteCollectionAmsterdam
+	url = https://github.com/frakkerman/WasteCollectionAmsterdam
