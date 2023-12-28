@@ -44,6 +44,12 @@ We provide more details and usage instructions for each project in seperate READ
 
 ## To the make the code work
 
+If you want to use the Amsterdam waste collection simulation model, ensure that you clone the repository with submodules:
+
+```
+git clone --recurse-submodules
+```
+
  * Create a local python environment by subsequently executing the following commands in the root folder
 	* `python3 -m venv venv`
 	* `source venv/bin/activate`
