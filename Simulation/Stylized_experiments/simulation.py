@@ -65,70 +65,6 @@ def distance(PointA, PointB):
 def AvgDepotDist(CustomerList):
     return sum(distance(customer[0], DepotLoc) for customer in CustomerList) / len(CustomerList)
 
-# Find Seeds for parallel VRP
-def findSeeds(CustomerList):
-    seed = []
-    for s in range(Vehicles):
-        furthestDistance = -1
-        seedIndex = None
-        for i, customer in enumerate(CustomerList):
-            dist = distance(customer[0], DepotLoc)
-            if s != 0:
-                dist += sum(distance(customer[0], existing_seed[0]) for existing_seed in seed)
-            if dist > furthestDistance:
-                furthestDistance = dist
-                seedIndex = i
-        seed.append(CustomerList[seedIndex])
-    return seed
-
-# Parallel sweep seed assignment VRP heuristic
-def parallelSeedAssignmentVRP(CustomerList):
-    seeds = findSeeds(CustomerList)
-    vehicleCustomerList = [[] for _ in range(Vehicles)]
-    vehicleCapacityList = [VehicleCapacity] * Vehicles
-    noFit = 0
-
-    while noFit < len(seeds) * 5:
-        for vehicle, seed in enumerate(seeds):
-            cheapestInsert = float('inf')
-            cheapestIndex = -1
-            for i, customer in enumerate(CustomerList):
-                if vehicleCapacityList[vehicle] - customer[1] >= 0:
-                    dist = distance(customer[0], seed[0])
-                    if dist < cheapestInsert:
-                        cheapestInsert = dist
-                        cheapestIndex = i
-            if cheapestIndex >= 0:
-                vehicleCustomerList[vehicle].append(CustomerList.pop(cheapestIndex))
-                vehicleCapacityList[vehicle] -= vehicleCustomerList[vehicle][-1][1]
-            else:
-                noFit += 1
-
-    return vehicleCustomerList, CustomerList
-
-# Nearest neighbor
-def nearestNeighbor(VehicleList):
-    totalDist = 0
-    vehicleRoutes = []
-
-    for vehicle in VehicleList:
-        routeDist = 0
-        route = [DepotLoc]
-        while vehicle:
-            closest, closestDist = min(
-                ((customer, distance(route[-1], customer[0])) for customer in vehicle),
-                key=lambda x: x[1]
-            )
-            vehicle.remove(closest)
-            route.append(closest[0])
-            routeDist += closestDist
-        routeDist += distance(route[-1], DepotLoc)
-        route.append(DepotLoc)
-        totalDist += routeDist
-        vehicleRoutes.append(route)
-
-    return totalDist, vehicleRoutes
-
 # Feature calculation
 def FeatureCalculation(routes, Featuresdf):
     # Each tuple in a route is (location, demand)
@@ -198,7 +134,6 @@ def FindCheapestInsertions(CustomerList, costFunction, regressor):
 
     return AcceptedCustomerList
 
-
 # Single LinReg prediction faster than SKLEARN
 class BarebonesLinearRegression(LinearRegression):
     def predict_single(self, x):
@@ -227,7 +162,7 @@ for replication in range(Replications):
     random.seed(42 + replication)
     Featuresdf = pd.DataFrame()
     Targetdf = pd.DataFrame()
-    regressor = None
+    regressor = bb_lin_reg
 
     for iteration in range(Iterations):
         CustomerList = initIteration([])
