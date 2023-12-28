@@ -29,7 +29,7 @@ The code is written in Python 3.10. A requirements.txt details further requireme
 ## Folder Structure
 The repository contains the following folders:
 
-- **`data/`**: Contains the data used by FeatureEngineering and outputted by FetaureEngineering.
+- **`data/`**: Contains the data used by FeatureEngineering and outputted by FeatureEngineering.
 - **`FeatureEngineering/`**: Contains the main code for engineering features based on simulation data.
 - **`MachineLearning/`**: Contains the main code for training various distance approximation machine learning models on the data.
   - **`Models/`**: Contains the machine learning models we used (linear regression, random forests, XGBoost, lightGBM, and neural networks), here we also save the models.
@@ -37,7 +37,7 @@ The repository contains the following folders:
   - **`Utils/`**: Contains utility functions, e.g., data loading and hyperparameter tuning using grid search and Bayesian optimization.
 - **`Simulation/`**: Contains the main code for simulation: both for the stylized experiments and the Amsterdam waste collection case study (see paper).
 
-Each folder in the root is a seperate project with a seperate `main.py`, such that users can use only the functionality that they want, e.g., only use the ML-models. If you want to test the complete pipeline, you will first need to obtain data using the simulation model, next engineer features, and finally train a ML-model. Next, you can use this ML model again in the simulation. Note that we already provide a dataset for the Amstedam case in the `data` folder.
+Each folder in the root is a seperate project with a seperate `main.py`, such that users can use only the functionality that they want, e.g., only use the ML-models. If you want to test the complete pipeline, you will first need to obtain data using the simulation model, next engineer features, and finally train a ML-model. Next, you can use this ML model again in the simulation. Note that we already provide a dataset for the Amstedam case in the `data` folder, which can be used to abstract features from.
 
 We provide more details and usage instructions for each project in seperate README's in the folders in this project.
 
